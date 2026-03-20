@@ -41,9 +41,12 @@
   </style>
   <script>
     // Try to open the app via deep link
-    const eventId = window.location.pathname.split('/').pop();
-    if (eventId && eventId !== 'join') {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const eventId = parts.length > 1 ? parts.pop() : null;
+    if (eventId) {
       window.location = 'memoria://join/' + eventId;
+    } else {
+      window.location = 'memoria://';
     }
   </script>
 </head>
@@ -55,9 +58,12 @@
     <a class="btn" id="open-btn" href="#">Open in Memoria</a>
   </div>
   <script>
-    const id = window.location.pathname.split('/').filter(Boolean).pop();
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const id = parts.length > 1 ? parts.pop() : null;
     if (id) {
       document.getElementById('open-btn').href = 'memoria://join/' + id;
+    } else {
+      document.getElementById('open-btn').href = 'memoria://';
     }
   </script>
 </body>
