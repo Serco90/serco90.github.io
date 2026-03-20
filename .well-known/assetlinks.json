@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.serco90.memoria",
+    "sha256_cert_fingerprints": [
+      "47:46:6E:45:33:9E:B5:B5:FF:E1:B2:63:C1:48:56:67:B5:CE:5D:E2:6F:6F:51:47:2D:83:45:54:EF:B1:A6:C0"
+    ]
+  }
+}]
