@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Join Event – Memoria</title>
+  <title>Join Adventure – Memoria</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -39,32 +39,18 @@
       font-weight: 600;
     }
   </style>
-  <script>
-    // Try to open the app via deep link
-    const parts = window.location.pathname.split('/').filter(Boolean);
-    const eventId = parts.length > 1 ? parts.pop() : null;
-    if (eventId) {
-      window.location = 'memoria://join/' + eventId;
-    } else {
-      window.location = 'memoria://';
-    }
-  </script>
 </head>
 <body>
   <div class="card">
     <div class="emoji">📸</div>
     <h1>You're invited!</h1>
-    <p>Open Memoria to join this event and see the photos.</p>
+    <p>Open Memoria to join this adventure and see the photos.</p>
     <a class="btn" id="open-btn" href="#">Open in Memoria</a>
   </div>
   <script>
-    const parts = window.location.pathname.split('/').filter(Boolean);
-    const id = parts.length > 1 ? parts.pop() : null;
-    if (id) {
-      document.getElementById('open-btn').href = 'memoria://join/' + id;
-    } else {
-      document.getElementById('open-btn').href = 'memoria://';
-    }
+    const id = new URLSearchParams(window.location.search).get('id');
+    const deepLink = id ? 'memoria://join/' + id : 'memoria://';
+    document.getElementById('open-btn').href = deepLink;
   </script>
 </body>
 </html>
