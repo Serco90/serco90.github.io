@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memoria – Email Confirmed</title>
+  <title>Memoria</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -39,17 +39,33 @@
       font-weight: 600;
     }
   </style>
-  <script>
-    // Auto-open the app
-    window.location = 'memoria://home';
-  </script>
 </head>
 <body>
   <div class="card">
-    <div class="emoji">✅</div>
-    <h1>Email confirmed!</h1>
-    <p>Your account is ready. Open Memoria to start your first adventure.</p>
-    <a class="btn" href="memoria://home">Open Memoria</a>
+    <div class="emoji" id="emoji">✅</div>
+    <h1 id="heading">Email confirmed!</h1>
+    <p id="body">Your account is ready. Open Memoria to start your first adventure.</p>
+    <a class="btn" id="open-btn" href="memoria://home">Open Memoria</a>
   </div>
+  <script>
+    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const type = hash.get('type');
+    const accessToken = hash.get('access_token');
+    const refreshToken = hash.get('refresh_token');
+
+    if (type === 'recovery' && accessToken) {
+      const fragment = 'access_token=' + accessToken +
+        (refreshToken ? '&refresh_token=' + refreshToken : '') +
+        '&type=recovery';
+      const deepLink = 'memoria://reset-password#' + fragment;
+      document.getElementById('emoji').textContent = '🔑';
+      document.getElementById('heading').textContent = 'Reset your password';
+      document.getElementById('body').textContent = 'Open Memoria to set a new password for your account.';
+      document.getElementById('open-btn').href = deepLink;
+      window.location = deepLink;
+    } else {
+      window.location = 'memoria://home';
+    }
+  </script>
 </body>
 </html>
