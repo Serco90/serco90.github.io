@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Join Adventure – Memoria</title>
+  <title>Memoria</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -43,13 +43,32 @@
 <body>
   <div class="card">
     <div class="emoji">📸</div>
-    <h1>You're invited!</h1>
-    <p>Open Memoria to join this adventure and see the photos.</p>
+    <h1 id="heading">You're invited!</h1>
+    <p id="body">Open Memoria to join this adventure and see the photos.</p>
     <a class="btn" id="open-btn" href="#">Open in Memoria</a>
   </div>
   <script>
-    const id = new URLSearchParams(window.location.search).get('id');
-    const deepLink = id ? 'memoria://join/' + id : 'memoria://';
+    const params = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const id = params.get('id');
+    const type = hash.get('type');
+    const accessToken = hash.get('access_token');
+    const refreshToken = hash.get('refresh_token');
+
+    let deepLink;
+    if (type === 'recovery' && accessToken) {
+      const fragment = 'access_token=' + accessToken +
+        (refreshToken ? '&refresh_token=' + refreshToken : '') +
+        '&type=recovery';
+      deepLink = 'memoria://reset-password#' + fragment;
+      document.getElementById('heading').textContent = 'Reset your password';
+      document.getElementById('body').textContent = 'Open Memoria to set a new password for your account.';
+      document.getElementById('open-btn').textContent = 'Open Memoria';
+    } else if (id) {
+      deepLink = 'memoria://join/' + id;
+    } else {
+      deepLink = 'memoria://';
+    }
     document.getElementById('open-btn').href = deepLink;
   </script>
 </body>
