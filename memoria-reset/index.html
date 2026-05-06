@@ -182,8 +182,18 @@
         errorEl.style.display = 'block';
         return;
       }
-      if (pw1.length < 6) {
-        errorEl.textContent = 'Password must be at least 6 characters.';
+      if (pw1.length < 8) {
+        errorEl.textContent = 'Password must be at least 8 characters.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      if (!/[a-zA-Z]/.test(pw1)) {
+        errorEl.textContent = 'Password must contain at least one letter.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      if (!/[^a-zA-Z0-9]/.test(pw1)) {
+        errorEl.textContent = 'Password must contain at least one special character.';
         errorEl.style.display = 'block';
         return;
       }
