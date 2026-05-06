@@ -12,9 +12,20 @@
       color: #fff;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px;
+    }
+    .app-name {
+      font-size: 40px;
+      font-weight: 800;
+      color: #0d9488;
+      letter-spacing: -0.5px;
+      margin-bottom: 24px;
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
     }
     .card {
       background: #1a1d27;
@@ -81,6 +92,8 @@
   </style>
 </head>
 <body>
+
+  <div class="app-name">Memoria</div>
 
   <div class="card" id="card-loading">
     <div class="spinner"></div>
@@ -162,7 +175,7 @@
         return;
       }
       if (pw1 !== pw2) {
-        errorEl.textContent = "Passwords don't match.";
+        errorEl.textContent = 'Passwords don''t match.';
         errorEl.style.display = 'block';
         return;
       }
