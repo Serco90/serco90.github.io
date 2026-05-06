@@ -187,6 +187,11 @@
         errorEl.style.display = 'block';
         return;
       }
+      if (!/[A-Z]/.test(pw1)) {
+        errorEl.textContent = 'Password must contain at least one uppercase letter.';
+        errorEl.style.display = 'block';
+        return;
+      }
       if (!/[a-zA-Z]/.test(pw1)) {
         errorEl.textContent = 'Password must contain at least one letter.';
         errorEl.style.display = 'block';
