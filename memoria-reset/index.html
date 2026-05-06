@@ -129,9 +129,20 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
-    const SUPABASE_URL = 'https://oaarhauiwawralqhrrlc.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hYXJoYXVpd2F3cmFscWhycmxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MjgyNjUsImV4cCI6MjA4OTUwNDI2NX0.z8FLzbTAw6UEXvsOVQjfadu_ABTX-hkwfS86yvm_79A';
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    var params = new URLSearchParams(window.location.search);
+    var hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    var code = params.get('code');
+    var accessToken = hash.get('access_token');
+    var refreshToken = hash.get('refresh_token');
+    var type = hash.get('type');
+
+    if (!code && !(accessToken && refreshToken && type === 'recovery')) {
+      show('card-expired');
+    }
+
+    var SUPABASE_URL = 'https://oaarhauiwawralqhrrlc.supabase.co';
+    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hYXJoYXVpd2F3cmFscWhycmxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MjgyNjUsImV4cCI6MjA4OTUwNDI2NX0.z8FLzbTAw6UEXvsOVQjfadu_ABTX-hkwfS86yvm_79A';
+    var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     function show(id) {
       ['card-loading','card-form','card-success','card-expired'].forEach(function(c) {
@@ -140,14 +151,6 @@
     }
 
     async function init() {
-      var params = new URLSearchParams(window.location.search);
-      var hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-
-      var code = params.get('code');
-      var accessToken = hash.get('access_token');
-      var refreshToken = hash.get('refresh_token');
-      var type = hash.get('type');
-
       if (code) {
         var result = await client.auth.exchangeCodeForSession(code);
         if (result.error) { show('card-expired'); return; }
@@ -155,10 +158,8 @@
         var result = await client.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
         if (result.error) { show('card-expired'); return; }
       } else {
-        show('card-expired');
         return;
       }
-
       show('card-form');
     }
 
@@ -175,7 +176,7 @@
         return;
       }
       if (pw1 !== pw2) {
-        errorEl.textContent = 'Passwords don''t match.';
+        errorEl.textContent = "Passwords don't match.";
         errorEl.style.display = 'block';
         return;
       }
