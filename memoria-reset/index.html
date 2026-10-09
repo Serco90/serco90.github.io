@@ -160,6 +160,7 @@
     <div class="emoji">✅</div>
     <h1>Password updated!</h1>
     <p>Open Memoria and log in with your new password.</p>
+    <p style="font-size: 13px">Think someone else got into your account? After logging in, go to Profile → ⚙ → Sign out of all devices.</p>
     <a class="btn" href="memoria://home">Open Memoria</a>
   </div>
 
@@ -256,6 +257,8 @@
         return;
       }
 
+      // The link signed this browser in; end that session so the browser isn't left logged in
+      await client.auth.signOut({ scope: 'local' }).catch(function() {});
       show('card-success');
     });
 
