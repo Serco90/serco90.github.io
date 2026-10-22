@@ -48,28 +48,10 @@
     <a class="btn" id="open-btn" href="#">Open in Memoria</a>
   </div>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-    const id = params.get('id');
-    const type = hash.get('type');
-    const accessToken = hash.get('access_token');
-    const refreshToken = hash.get('refresh_token');
-
-    let deepLink;
-    if (type === 'recovery' && accessToken) {
-      const fragment = 'access_token=' + accessToken +
-        (refreshToken ? '&refresh_token=' + refreshToken : '') +
-        '&type=recovery';
-      deepLink = 'memoria://reset-password#' + fragment;
-      document.getElementById('heading').textContent = 'Reset your password';
-      document.getElementById('body').textContent = 'Open Memoria to set a new password for your account.';
-      document.getElementById('open-btn').textContent = 'Open Memoria';
-    } else if (id) {
-      deepLink = 'memoria://join/' + id;
-    } else {
-      deepLink = 'memoria://';
-    }
-    document.getElementById('open-btn').href = deepLink;
+    // Invite links only: ?id=<invite code>. Nothing else is passed on to the app.
+    const id = new URLSearchParams(window.location.search).get('id');
+    const isCode = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '');
+    document.getElementById('open-btn').href = isCode ? 'memoria://join/' + id : 'memoria://';
   </script>
 </body>
 </html>
